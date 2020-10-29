@@ -1,2 +1,2 @@
-<? 
-echo 'Hello world';
+<?php
+include 'config.php';
