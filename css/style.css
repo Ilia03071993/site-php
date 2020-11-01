@@ -1,0 +1,16 @@
+body{
+     margin: 0;
+     padding: 0;
+}
+.wrapper{
+    width: 980px;
+    margin: auto;
+}
+.sidebar{
+    float: left;
+    width: 300px;
+}
+.content{
+    float: left;
+    width: 680px;
+}
