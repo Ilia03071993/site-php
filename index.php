@@ -32,7 +32,7 @@ $categories_menu = categories_to_string($categories_tree);
 <script src="js/jquery.accordion.js"></script>
 <script src="js/jquery.cookie.js"></script>
 <script>
-  $(document).ready(function)(){
+  $(document).ready(function(){
     $(".category").dcAccordion();
   });
 </script>
