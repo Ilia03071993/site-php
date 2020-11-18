@@ -14,7 +14,7 @@ function get_cat(){
     global $connection;
     $query = "SELECT * FROM categories";
     $res = mysqli_query($connection, $query); 
-    $arr_cat = array();
+    $arr_cat = array(); 
     while($row = mysqli_fetch_assoc($res)){
         $arr_cat[$row['id']] = $row;
     }
@@ -49,7 +49,7 @@ function categories_to_string($data){
 /***
  * Шаблон вывода категорий
 **/
-function categories_to_template($category){
+function categories_to_template( $category){
     ob_start();
     include 'category_template.php';
     return ob_get_clean();
