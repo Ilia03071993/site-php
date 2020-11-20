@@ -62,7 +62,7 @@ function categories_to_template( $category){
  function breadcrumbs($array, $id){
      if(!$id) return false;
 
-     $count = count($array);
+    $count = count($array);
     $breadcrumbs_array = array();
     for($i = 0; $i < $count; $i++){
         if($array[$id]){
@@ -70,5 +70,5 @@ function categories_to_template( $category){
             $id = $array[$id]['parent'];
         }else break;
     }
-    return $breadcrumbs_array;
+    return array_reverse($breadcrumbs_array, true);
  }

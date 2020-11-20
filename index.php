@@ -24,7 +24,8 @@ include 'catalog.php';
         </ul>
     </div>
      <div class="content">
-     <?php print_arr($breadcrumbs_array);?>
+     <p><?=($breadcrumbs_array);?></p>
+     <br>
      <hr>
      <?php print_arr($categories) ?>
     </div>
