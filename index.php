@@ -24,7 +24,9 @@ include 'catalog.php';
         </ul>
     </div>
      <div class="content">
-     <?php echo $categories_tree ?>
+     <?php print_arr($breadcrumbs_array);?>
+     <hr>
+     <?php print_arr($categories) ?>
     </div>
 </div>
 <script src="js/jquery-1.9.0.min.js"></script>
