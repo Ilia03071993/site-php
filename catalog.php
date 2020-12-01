@@ -12,9 +12,10 @@ if(isset($_GET['category'])){
 
     if($breadcrumbs_array){
         foreach($breadcrumbs_array as $id => $title){
-            $breadcrumbs .= "<a href='?category={$id}'>{$title}</a>";
+            $breadcrumbs .= "<a href='?category={$id}'>{$title}</a> / ";
         }
         $breadcrumbs = rtrim($breadcrumbs, " / ");
+        $breadcrumbs = preg_replace("#(.+)?<a.+>(.+)</a>$#", "$1$2",$breadcrumbs);
     }else{
         $breadcrumbs = "Каталог";
 

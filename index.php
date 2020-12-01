@@ -3,6 +3,12 @@ include 'config.php';
 include 'functions.php';
 include 'catalog.php';
  
+$array = range(1,1000); 
+
+
+// foreach($array as $value){
+//     echo $value; 
+// }
 
 
 
@@ -24,7 +30,7 @@ include 'catalog.php';
         </ul>
     </div>
      <div class="content">
-     <p><?=($breadcrumbs_array);?></p>
+     <p><?=$breadcrumbs_array;?></p>
      <br>
      <hr>
      <?php print_arr($categories) ?>

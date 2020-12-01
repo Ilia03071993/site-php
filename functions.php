@@ -26,7 +26,7 @@ function get_cat(){
 function map_tree($dataset){
     $tree = array();
 
-    foreach ($dataset as $id=>&$node){
+    foreach ($dataset as $id => &$node){
         if (!$node['parent']){
             $tree[$id] = &$node;
         }else{
@@ -49,7 +49,7 @@ function categories_to_string($data){
 /***
  * Шаблон вывода категорий
 **/
-function categories_to_template( $category){
+function categories_to_template($category){
     ob_start();
     include 'category_template.php';
     return ob_get_clean();
