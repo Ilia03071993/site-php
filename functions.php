@@ -60,6 +60,7 @@ function categories_to_template($category){
  **/
 
  function breadcrumbs($array, $id){
+     
      if(!$id) return false;
 
     $count = count($array);
@@ -71,4 +72,39 @@ function categories_to_template($category){
         }else break;
     }
     return array_reverse($breadcrumbs_array, true);
- }
+   
+ } 
+
+ /**
+  * Получить ID дочерних категорий
+  **/
+  function cats_id($array, $id){
+        if(!$id) return false;
+
+        foreach($array as $item){
+            if($item['parent'] == $id){
+                $data .= $item['id'] . ",";
+                $data .= cats_id($array, $item['id']);
+            }
+        }
+        return $data;
+  }
+
+  /**
+   * Получение товаров
+   **/
+  function get_products($ids = false){
+      global $connection;
+      if($ids){
+          $query = "SELECT * FROM products WHERE  parent IN($ids) ORDER BY title";
+        }else{ 
+            $query = "SELECT * FROM products ORDER BY title";
+
+        }
+        $res = mysqli_query($connection, $query);
+        $products = array();
+        while($row = mysqli_fetch_assoc($res)){
+            $products[] = $row;
+        }
+        return $products;
+  }

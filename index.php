@@ -1,18 +1,4 @@
-<?php
-include 'config.php';
-include 'functions.php';
-include 'catalog.php';
- 
-$array = range(1,1000); 
-
-
-// foreach($array as $value){
-//     echo $value; 
-// }
-
-
-
-?>
+<?php include 'catalog.php'; ?>
 
 <!doctype html>
 <html lang="en">
@@ -30,10 +16,16 @@ $array = range(1,1000);
         </ul>
     </div>
      <div class="content">
-     <p><?=$breadcrumbs_array;?></p>
+     <p><?=$breadcrumbs;?></p>
      <br>
      <hr>
-     <?php print_arr($categories) ?>
+     <?php if($products):  ?>
+            <?php foreach($products as $product):?>
+             <a href="?product=<?=$product['id']?>"><?=$product['title']?></a><br>
+            <?php endforeach; ?>
+            <?php else: ?>
+              <p>Здесь товаров нет!</p>
+            <?php endif;  ?>
     </div>
 </div>
 <script src="js/jquery-1.9.0.min.js"></script>
@@ -45,4 +37,6 @@ $array = range(1,1000);
   });
 </script>
 </body>
+
+
 </html>
