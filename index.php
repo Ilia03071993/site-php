@@ -20,6 +20,9 @@
      <br>
      <hr>
      <?php if($products):  ?>
+
+        <div class="pagination">Pagination</div>
+
             <?php foreach($products as $product):?>
              <a href="?product=<?=$product['id']?>"><?=$product['title']?></a><br>
             <?php endforeach; ?>
