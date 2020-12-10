@@ -19,6 +19,15 @@
      <p><?=$breadcrumbs;?></p>
      <br>
      <hr>
+    <div>
+        <select name="perpage" id="perpage">
+          <?php foreach($option_perpage as $option): ?>
+              <option <?php if($perpage == $option) echo "selected";?> value="<?=$option?>"> <?=$option?> товаров на страницу</option>
+          <?php endforeach ;?>
+       </select>
+    </div>
+
+
      <?php if($products):  ?>
           <?php if ($count_pages > 1):?>
               <div class="pagination"><?=$pagination?></div>
@@ -42,6 +51,11 @@
 <script>
   $(document).ready(function(){
     $(".category").dcAccordion();
+    $("#perpage").change(function(){
+      var perPage = this.value; //$(this).val()
+      $.cookie('per_page', perPage , {expires:7});
+      window.location = location.href;
+    });
   });
 </script>
 </body>

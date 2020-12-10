@@ -45,7 +45,7 @@ if(isset ($_GET['product'])){
 
 
     // кол-во товаров на страницу 
-    $perpage = 5;
+   $perpage = (int)$_COOKIE['per_page'] ? $_COOKIE['per_page'] : PERPAGE;
 
     // общее кол-во товаров
     $count_goods = count_goods($ids);
