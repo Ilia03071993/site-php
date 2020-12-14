@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="<?=PATH?>css/style.css">
 </head>
 <body>
-<a href="/catalog/">Главная</a>
-<div class="wrapper">
+  <a href="/catalog/">Главная</a>
+  <div class="wrapper">
     <div class="sidebar">
         <ul class="category">
             <?php echo $categories_menu ?>
@@ -32,8 +32,9 @@
           <?php if ($count_pages > 1):?>
               <div class="pagination"><?=$pagination?></div>
           <?php endif; ?>
+
             <?php foreach($products as $product):?>
-             <a href="<?=PATH?>product/<?=$product['id']?>"><?=$product['title']?></a><br>
+             <a href="<?=PATH?>product/<?=$product['alias']?>"><?=$product['title']?></a><br>
             <?php endforeach; ?>
 
             <?php if ($count_pages > 1):?>

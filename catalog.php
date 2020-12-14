@@ -6,10 +6,15 @@ $categories = get_cat();
 $categories_tree = map_tree($categories);
 $categories_menu = categories_to_string($categories_tree);
 
-if(isset ($_GET['product'])){
-    $product_id = (int)$_GET['product'];
+
+/**
+ * может быть либо ID продукта, либо  ID категории... если есть ID продукта , тогда ID категории возьмем из поля parent , иначе - возьмем сразу из параметра
+ **/
+if( isset ($_GET['product']) ){
+    $product_alias = $_Get['product'];
+    // $product_id = (int)$_GET['product'];
     //массив данных продукта
-    $get_one_product = get_one_product($product_id);
+    $get_one_product = get_one_product($product_alias);
     //получаем ID категорий
     $id = $get_one_product['parent'];
 }else{
@@ -24,7 +29,7 @@ if(isset ($_GET['product'])){
     if($breadcrumbs_array){
         $breadcrumbs = "<a href='" .PATH. "'>Главная</a> / ";
         foreach($breadcrumbs_array as $id => $title){
-            $breadcrumbs .= "<a href='" .PATH. "?category={$id}'>{$title}</a> / ";
+            $breadcrumbs .= "<a href='" .PATH. "category/{$id}'>{$title}</a> / ";
         }
         if (!isset($get_one_product)) {
             $breadcrumbs = rtrim($breadcrumbs, " / ");

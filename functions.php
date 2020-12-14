@@ -112,9 +112,11 @@ function categories_to_template($category){
 /**
  * Получение отдельного товара
 **/
-function get_one_product($product_id){
+function get_one_product($product_alias){
     global $connection;
-    $query = "SELECT * FROM products WHERE id = $product_id";
+    $product_alias = mysqli_real_escape_string($connection, $product_alias);
+    $query = "SELECT * FROM products WHERE alias = '$product_alias'";
+    exit($query);
     $res = mysqli_query($connection, $query);
     return mysqli_fetch_assoc($res);
 }
@@ -138,7 +140,7 @@ function count_goods($ids){
  * Постраничная навигация
 **/
 
-function pagination($page, $count_pages){
+function pagination($page, $count_pages, $modrew = true){
     // << < 3 4 5 6 7 > >>
     //$back - ссылка НАЗАД
     //$forward - ссылка ВПЕРЕД
@@ -150,16 +152,27 @@ function pagination($page, $count_pages){
     //$page1right - превая страница справа
 
     $uri = "?";
+    if(!$modrew){
     //елси есть параметры в запросе
-    if( $_SERVER['QUERY_STRING'] ){
-        foreach($_GET as $key => $value){
-           
-            if ($key != 'page') $uri .= "{$key}=$value&amp;";
+        if( $_SERVER['QUERY_STRING'] ){
+             foreach($_GET as $key => $value){
+            
+                if ($key != 'page') $uri .= "{$key}=$value&amp;";
+            }
+        }
+            
+        }else{
+            $url = $_SERVER['REQUEST_URI'];
+            $url = explode("?", $url);
+            if(isset($url[1]) && $url[1] !=''){
+                $params = explode("&",$url[1]);
+                foreach($params as $param){
+                    if(!preg_match("#page=#",$param)) $uri .= "{$param}&amp;";
+                }
+            }
         }
         
-        
-    }
-
+    
     if($page > 1){
         $back = "<a class='nav-link' href='{$uri}page=" .($page-1) . "'>&lt;</a>";
     }
