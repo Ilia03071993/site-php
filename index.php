@@ -1,65 +1,85 @@
-<?php include 'catalog.php'; ?>
+<?php
+include 'config.php';
+include 'functions.php';
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Каталог</title>
-    <link rel="stylesheet" href="<?=PATH?>css/style.css">
-</head>
-<body>
-  <a href="/catalog/">Главная</a>
-  <div class="wrapper">
-    <div class="sidebar">
-        <ul class="category">
-            <?php echo $categories_menu ?>
-        </ul>
-    </div>
-     <div class="content">
-     <p><?=$breadcrumbs;?></p>
-     <br>
-     <hr>
-    <div>
-        <select name="perpage" id="perpage">
-          <?php foreach($option_perpage as $option): ?>
-              <option <?php if($perpage == $option) echo "selected";?> value="<?=$option?>"> <?=$option?> товаров на страницу</option>
-          <?php endforeach ;?>
-       </select>
-    </div>
+$categories = get_cat();
+$categories_tree = map_tree($categories);
+$categories_menu = categories_to_string($categories_tree);
 
 
-     <?php if($products):  ?>
-          <?php if ($count_pages > 1):?>
-              <div class="pagination"><?=$pagination?></div>
-          <?php endif; ?>
+/**
+ * может быть либо ID продукта, либо  ID категории... если есть ID продукта , тогда ID категории возьмем из поля parent , иначе - возьмем сразу из параметра
+ **/
+if( isset ($_GET['product']) ){
+    $product_alias = $_Get['product'];
+    // $product_id = (int)$_GET['product'];
+    //массив данных продукта
+    $get_one_product = get_one_product($product_alias);
+    //получаем ID категорий
+    $id = $get_one_product['parent'];
+}else{
+    $id = (int)$_GET['category'];
+}
+    
+    //хлебные крошки
+    // return true (array not empty) || return false
 
-            <?php foreach($products as $product):?>
-             <a href="<?=PATH?>product/<?=$product['alias']?>"><?=$product['title']?></a><br>
-            <?php endforeach; ?>
+    $breadcrumbs_array = breadcrumbs($categories, $id);
+        
+    if($breadcrumbs_array){
+        $breadcrumbs = "<a href='" .PATH. "'>Главная</a> / ";
+        foreach($breadcrumbs_array as $id => $title){
+            $breadcrumbs .= "<a href='" .PATH. "category/{$id}'>{$title}</a> / ";
+        }
+        if (!isset($get_one_product)) {
+            $breadcrumbs = rtrim($breadcrumbs, " / ");
+            $breadcrumbs = preg_replace("#(.+)?<a.+>(.+)</a>$#", "$1$2",$breadcrumbs);
+        }else{
+            $breadcrumbs .= $get_one_product['title'];
+        }
+       
+    }else{
+        $breadcrumbs = "<a href='" .PATH. "'>Главная</a> / Каталог";
 
-            <?php if ($count_pages > 1):?>
-              <div class="pagination"><?=$pagination?></div>
-          <?php endif; ?>
+    } 
 
-            <?php else: ?>
-              <p>Здесь товаров нет!</p>
-            <?php endif;  ?>
-    </div>
-</div>
-<script src="<?=PATH?>js/jquery-1.9.0.min.js"></script>
-<script src="<?=PATH?>js/jquery.accordion.js"></script>
-<script src="<?=PATH?>js/jquery.cookie.js"></script>
-<script>
-  $(document).ready(function(){
-    $(".category").dcAccordion();
-    $("#perpage").change(function(){
-      var perPage = this.value; //$(this).val()
-      $.cookie('per_page', perPage , {expires:7});
-      window.location = location.href;
-    });
-  });
-</script>
-</body>
+    // ID дочерних категорий
+    $ids = cats_id($categories, $id);
+    $ids = !$ids ? $id : rtrim($ids, ",");
+    /*===========Пагинация===========*/
 
 
-</html>
+    // кол-во товаров на страницу 
+   $perpage = (int)$_COOKIE['per_page'] ? $_COOKIE['per_page'] : PERPAGE;
+
+    // общее кол-во товаров
+    $count_goods = count_goods($ids);
+
+    //необходимое кол-во страниц
+    $count_pages = ceil($count_goods / $perpage);
+
+    //миниум 1 страница
+    if (!$count_pages) $count_pages = 1;
+    
+    //получение текущей страницы из массива GET
+    if( isset ($_GET['page'])){
+        $page = (int)$_GET['page'];
+        if($page < 1) $page = 1;
+    }else{
+        $page = 1;
+    }
+
+    //eсли запрошенная страница больше максимума
+    if($page > $count_pages) $page = $count_pages;
+    
+    //начальная позиция для запроса
+    $start_pos = ($page - 1) * $perpage;
+
+    $pagination = pagination($page, $count_pages);
+
+    /*===========Пагинация===========*/
+    $products = get_products($ids, $start_pos, $perpage);
+
+    include 'views/product.php';
+
+ 
