@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Каталог</title>
-    <link rel="stylesheet" href="<?=PATH?>css/style.css">
+    <link rel="stylesheet" href="<?=PATH?>views/style.css">
 </head>
 <body>
 <a href="/catalog/">Главная</a>
@@ -22,9 +22,9 @@
 ?>   
     </div>
 </div>
-<script src="<?=PATH?>js/jquery-1.9.0.min.js"></script>
-<script src="<?=PATH?>js/jquery.accordion.js"></script>
-<script src="<?=PATH?>js/jquery.cookie.js"></script>
+<script src="<?=PATH?>views/js/jquery-1.9.0.min.js"></script>
+<script src="<?=PATH?>views/js/jquery.accordion.js"></script>
+<script src="<?=PATH?>views/js/jquery.cookie.js"></script>
 <script>
   $(document).ready(function(){
     $(".category").dcAccordion();

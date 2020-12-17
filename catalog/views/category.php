@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Каталог</title>
-    <link rel="stylesheet" href="<?=PATH?>css/style.css">
+    <link rel="stylesheet" href="<?=PATH?>views/style.css">
 </head>
 <body>
   <a href="/catalog/">Главная</a>
