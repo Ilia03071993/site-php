@@ -40,6 +40,7 @@ function map_tree($dataset){
  * Дерeво в строку HTML
  **/
 function categories_to_string($data){
+    $string = null;
     foreach($data as $item){
         $string .= categories_to_template($item);
     }
@@ -66,7 +67,7 @@ function categories_to_template($category){
     $count = count($array);
     $breadcrumbs_array = array();
     for($i = 0; $i < $count; $i++){
-        if($array[$id]){
+        if(isset($array[$id])){
             $breadcrumbs_array[$array[$id]['id']] = $array[$id]['title'];
             $id = $array[$id]['parent'];
         }else break;
@@ -80,7 +81,7 @@ function categories_to_template($category){
   **/
   function cats_id($array, $id){
         if(!$id) return false;
-
+        $data = null;
         foreach($array as $item){
             if($item['parent'] == $id){
                 $data .= $item['id'] . ",";
@@ -142,14 +143,14 @@ function count_goods($ids){
 
 function pagination($page, $count_pages, $modrew = true){
     // << < 3 4 5 6 7 > >>
-    //$back - ссылка НАЗАД
-    //$forward - ссылка ВПЕРЕД
-    //$startpage -ссылка В НАЧАЛО 
-    //$endpage - ссылка В КОНЕЦ
-    //$page2left - вторая страница слева
-    //$page1left - вторая страница справа
-    //$page2right - первая страница слева
-    //$page1right - превая страница справа
+    $back = null; // ссылка НАЗАД
+    $forward = null; // ссылка ВПЕРЕД
+    $startpage = null; // ссылка В НАЧАЛО 
+    $endpage = null; // ссылка В КОНЕЦ
+    $page2left = null; // вторая страница слева
+    $page1left = null; // вторая страница справа
+    $page2right = null; // первая страница слева
+    $page1right = null; // превая страница справа
 
     $uri = "?";
     if(!$modrew){

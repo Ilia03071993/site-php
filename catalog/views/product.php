@@ -1,3 +1,4 @@
+<?php defined("CATALOG") or die("Access denied"); ?>
 <!doctype html>
 <html lang="en">
 <head>

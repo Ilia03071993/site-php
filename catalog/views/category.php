@@ -1,3 +1,4 @@
+<?php defined("CATALOG") or die("Access denied"); ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -44,15 +45,15 @@
             <?php endif;  ?>
     </div>
 </div>
-<script src="<?=PATH?>js/jquery-1.9.0.min.js"></script>
-<script src="<?=PATH?>js/jquery.accordion.js"></script>
-<script src="<?=PATH?>js/jquery.cookie.js"></script>
+<script src="<?=PATH?>views/js/jquery-1.9.0.min.js"></script>
+<script src="<?=PATH?>views/js/jquery.accordion.js"></script>
+<script src="<?=PATH?>views/js/jquery.cookie.js"></script>
 <script>
   $(document).ready(function(){
     $(".category").dcAccordion();
     $("#perpage").change(function(){
       var perPage = this.value; //$(this).val()
-      $.cookie('per_page', perPage , {expires:7});
+      $.cookie('per_page', perPage , {expires:7, path:'/catalog/'});
       window.location = location.href;
     });
   });

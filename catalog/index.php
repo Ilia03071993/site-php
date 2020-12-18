@@ -1,24 +1,53 @@
 <?php
+error_reporting(E_ALL);
+define("CATALOG", TRUE);
 include 'config.php';
 include 'functions.php';
+
+$id = null;
+
+$routes = array(
+    array('url' => '#^$|^\?#', 'view' => 'category'),
+    array('url' => '#^product/(?P<product_alias>[a-z0-9-]+)#i', 'view' => 'product'),
+    array('url' => '#^category/(?P<id>\d+)#i', 'view' => 'category')
+);
+
+$url = str_replace('/catalog/', '', $_SERVER['REQUEST_URI']);
+
+
+
+foreach ($routes as $route) {
+    if(preg_match($route['url'], $url, $match)){
+        $view = $route['view'];
+        break;
+    }
+}
+
+if(empty($match)){
+    include 'views/404.php';
+    exit;
+}
+
+extract($match);
+// $id - ID категории
+// $product_alias - alias продукта
+// $view - вид для подключения
+if(!isset($id)) $id = null;
 
 $categories = get_cat();
 $categories_tree = map_tree($categories);
 $categories_menu = categories_to_string($categories_tree);
 
 
+
 /**
  * может быть либо ID продукта, либо  ID категории... если есть ID продукта , тогда ID категории возьмем из поля parent , иначе - возьмем сразу из параметра
  **/
-if( isset ($_GET['product']) ){
-    $product_alias = $_Get['product'];
-    // $product_id = (int)$_GET['product'];
+if( isset ($product_alias) ){
     //массив данных продукта
     $get_one_product = get_one_product($product_alias);
     //получаем ID категорий
     $id = $get_one_product['parent'];
-}else{
-    $id = (int)$_GET['category'];
 }
     
     //хлебные крошки
@@ -50,7 +79,7 @@ if( isset ($_GET['product']) ){
 
 
     // кол-во товаров на страницу 
-   $perpage = (int)$_COOKIE['per_page'] ? $_COOKIE['per_page'] : PERPAGE;
+   $perpage = (isset($_COOKIE['per_page']) && (int)$_COOKIE['per_page'])? $_COOKIE['per_page'] : PERPAGE;
 
     // общее кол-во товаров
     $count_goods = count_goods($ids);
@@ -80,6 +109,6 @@ if( isset ($_GET['product']) ){
     /*===========Пагинация===========*/
     $products = get_products($ids, $start_pos, $perpage);
 
-    include 'views/product.php';
+    include "views/{$view}.php";
 
  
